@@ -39,5 +39,22 @@ class convolve3d:
                 self.output[i,j,f] = np.sum (image_patch * self.kernel[f])
         self.output = activations.relu(self.output)
 
-    
+    def backward(self, dvalues):
+        dkernel = np.zeros_like(self.kernel)
+        dinputs = np.zeros_like(self.image)
+        num_input_channels = self.image.shape[2] # get number of channels in input image
 
+        for image_patch, i, j in self.image_region(self.image):
+            for f in range (self.num_filters):
+                if self.output[i,j,f] > 0: #ReLU derivative
+                    # accumulate gradients for kernel 
+                    dkernel[f] += dvalues [i,j,f] * image_patch
+
+                    #accumulate gradients for inputs
+                    for c in range (num_input_channels):
+                        dinputs[i:i+self.filter_size, j:j+self.filter_size, c] +=(
+                            dvalues [i,j,f] * self.kernel[f,:,:,c]
+                        )
+        self.dkernel = dkernel
+        return dinputs
+    
