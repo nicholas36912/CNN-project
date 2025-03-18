@@ -14,7 +14,7 @@ def cross_entropy_loss(y_true, y_pred):
 conv1 = convolution.convolve3d(num_filters=3, filter_size=3, channels=3)
 pool1 = pooling.maxpool(filter_size=2)
 conv2 = convolution.convolve3d(num_filters=6, filter_size=3, channels=3)
-pool2 = pooling.maxpool3d(filter_size=2)
+pool2 = pooling.maxpool(filter_size=2)
 
 # Dynamically calculate the flattened size for the dense layer
 flattened_size = np.prod(pool2.forward(conv2.forward(pool1.forward(conv1.forward(datainit.X_train[0])))).shape)

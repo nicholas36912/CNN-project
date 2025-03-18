@@ -30,7 +30,7 @@ class convolve3d:
 
     def forward(self, image):
         height, width, channels = image.shape
-        self.image - image 
+        self.image = image 
         #initialize output matrix
         self.output = np.zeros((height - self.filter_size + 1, width - self.filter_size + 1, self.num_filters))
         
